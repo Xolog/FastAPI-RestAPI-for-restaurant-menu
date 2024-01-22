@@ -8,12 +8,13 @@ from sqlalchemy.orm import joinedload
 from .models import Menu, Submenu, Dish
 from database import get_async_session
 from .schemas import MenuDTO, MenuAddDTO, MenuUpdateDTO, MenuDeleteDTO, SubMenuDTO, SubMenuAddDTO, SubMenuUpdateDTO, \
-    SubMenuDeleteDTO, DishDTO, DishAddDTO
+    SubMenuDeleteDTO, DishDTO, DishAddDTO, DishUpdateDTO, DishDeleteDTO
 
 menu_router = APIRouter(
     prefix="/api/v1/menus",
     tags=["Menus"]
 )
+
 
 
 @menu_router.get("/", response_model=List[MenuDTO])
@@ -129,7 +130,7 @@ async def patch_submenu(api_test_menu_id: str, api_test_submenu_id: str, body: S
 
 
 @menu_router.delete('/{api_test_menu_id}/submenus/{api_test_submenu_id}', response_model=SubMenuDeleteDTO)
-async def delete_menu(api_test_menu_id: str, api_test_submenu_id: str, session: AsyncSession = Depends(get_async_session)):
+async def delete_submenu(api_test_menu_id: str, api_test_submenu_id: str, session: AsyncSession = Depends(get_async_session)):
     query = select(Submenu).filter(Submenu.id == api_test_submenu_id, Submenu.menu_id == api_test_menu_id)
 
     result = await session.scalar(query)
@@ -137,11 +138,11 @@ async def delete_menu(api_test_menu_id: str, api_test_submenu_id: str, session: 
     await session.delete(result)
     await session.commit()
 
-    return MenuDeleteDTO()
+    return SubMenuDeleteDTO()
 
 
 @menu_router.get('/{api_test_menu_id}/submenus/{api_test_submenu_id}/dishes', response_model=List[DishDTO])
-async def get_dishes(api_test_menu_id: str, api_test_submenu_id: str, session: AsyncSession = Depends(get_async_session)):
+async def get_dish_list(api_test_menu_id: str, api_test_submenu_id: str, session: AsyncSession = Depends(get_async_session)):
     query = select(Submenu).filter(Submenu.id == api_test_submenu_id, Submenu.menu_id == api_test_menu_id)
     result = await session.scalar(query)
 
@@ -149,7 +150,7 @@ async def get_dishes(api_test_menu_id: str, api_test_submenu_id: str, session: A
 
 
 @menu_router.post('/{api_test_menu_id}/submenus/{api_test_submenu_id}/dishes', response_model=DishDTO, status_code=201)
-async def get_dishes(api_test_menu_id: str, api_test_submenu_id: str, new_dish: DishAddDTO, session: AsyncSession = Depends(get_async_session)):
+async def add_dish_list(api_test_menu_id: str, api_test_submenu_id: str, new_dish: DishAddDTO, session: AsyncSession = Depends(get_async_session)):
     stmt = Dish(**new_dish.model_dump(), submenu_id=api_test_submenu_id)
     session.add(stmt)
     await session.commit()
@@ -157,4 +158,41 @@ async def get_dishes(api_test_menu_id: str, api_test_submenu_id: str, new_dish: 
 
     return stmt
 
-# fail Response contains 'description' price | AssertionError: expected '12.5' to deeply equal 12.5
+
+@menu_router.get('/{api_test_menu_id}/submenus/{api_test_submenu_id}/dishes/{dish_id}', response_model=DishDTO)
+async def get_submenu(api_test_menu_id: str, api_test_submenu_id: str, dish_id: str, session: AsyncSession = Depends(get_async_session)):
+    query = select(Dish).filter(Dish.id == dish_id)
+
+    result = await session.scalar(query)
+    if result is None:
+        raise HTTPException(status_code=404, detail="dish not found")
+
+    return result
+
+
+@menu_router.patch('/{api_test_menu_id}/submenus/{api_test_submenu_id}/dishes/{dish_id}', response_model=DishUpdateDTO)
+async def patch_submenu(api_test_menu_id: str, api_test_submenu_id: str,  dish_id: str, body: DishUpdateDTO, session: AsyncSession = Depends(get_async_session)):
+    query = select(Dish).filter(Dish.id == dish_id)
+
+    result = await session.scalar(query)
+    if result is None:
+        raise HTTPException(status_code=404, detail="dish not found")
+
+    for field, value in body.model_dump(exclude_none=True).items():
+        setattr(result, field, value)
+
+    await session.commit()
+
+    return result
+
+
+@menu_router.delete('/{api_test_menu_id}/submenus/{api_test_submenu_id}/dishes/{dish_id}', response_model=DishDeleteDTO)
+async def delete_menu(api_test_menu_id: str, api_test_submenu_id: str, dish_id: str, session: AsyncSession = Depends(get_async_session)):
+    query = select(Dish).filter(Dish.id == dish_id)
+
+    result = await session.scalar(query)
+
+    await session.delete(result)
+    await session.commit()
+
+    return DishDeleteDTO()

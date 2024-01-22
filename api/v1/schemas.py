@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from pydantic import BaseModel, UUID4
+from pydantic import BaseModel, UUID4, condecimal
 
 
 class MenuAddDTO(BaseModel):
@@ -47,8 +47,19 @@ class SubMenuDeleteDTO(BaseModel):
 class DishAddDTO(BaseModel):
     title: str
     description: str
-    price: Decimal
+    price: condecimal(ge=0, decimal_places=2)
 
 
 class DishDTO(DishAddDTO):
     id: UUID4
+
+
+class DishUpdateDTO(BaseModel):
+    title: str | None
+    description: str | None
+    price: condecimal(ge=0, decimal_places=2) | None
+
+
+class DishDeleteDTO(BaseModel):
+    status: bool = True
+    message: str = "The dish has been deleted"
