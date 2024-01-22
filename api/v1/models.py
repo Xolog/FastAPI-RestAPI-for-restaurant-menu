@@ -16,7 +16,6 @@ class Menu(Base):
         primary_key=True,
         default=uuid.uuid4,
         index=True,
-        nullable=False
     )
 
     title = Column(String)
@@ -32,7 +31,6 @@ class Submenu(Base):
         primary_key=True,
         default=uuid.uuid4,
         index=True,
-        nullable=False
     )
 
     title = Column(String)
@@ -50,7 +48,6 @@ class Dish(Base):
         primary_key=True,
         default=uuid.uuid4,
         index=True,
-        nullable=False
     )
 
     title = Column(String, unique=True)
