@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
 from fastapi.responses import JSONResponse
-from v1.router import router as router_restaurant
+from v1.router import menu_router as router_restaurant
 
 app = FastAPI(
     title="Ylab Homework First"

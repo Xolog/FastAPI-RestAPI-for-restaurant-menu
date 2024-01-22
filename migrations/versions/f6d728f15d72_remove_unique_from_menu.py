@@ -1,8 +1,8 @@
-"""dish redacted
+"""remove unique from menu
 
-Revision ID: bf606edaead7
-Revises: c6c4c8da3a40
-Create Date: 2024-01-22 13:17:44.606146
+Revision ID: f6d728f15d72
+Revises: 
+Create Date: 2024-01-23 00:01:08.322888
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'bf606edaead7'
-down_revision: Union[str, None] = 'c6c4c8da3a40'
+revision: str = 'f6d728f15d72'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
