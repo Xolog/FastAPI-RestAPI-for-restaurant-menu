@@ -1,9 +1,8 @@
 from typing import List
 
-from sqlalchemy import select, insert
+from sqlalchemy import select
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload
 
 from .models import Menu, Submenu, Dish
 from database import get_async_session
@@ -14,7 +13,6 @@ menu_router = APIRouter(
     prefix="/api/v1/menus",
     tags=["Menus"]
 )
-
 
 
 @menu_router.get("/", response_model=List[MenuDTO])
