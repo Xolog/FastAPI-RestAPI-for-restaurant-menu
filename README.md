@@ -10,8 +10,10 @@
 * PostgreSQL
 
 ## Установка
-`git clone https://github.com/Xolog/Ylab_homework.git
-cd Ylab_homework
-poetry install
+```
+git clone https://github.com/Xolog/Ylab_homework.git
+cd Ylab_homework  
+poetry install  
 cd api
-uvicorn main:app --reload`
+uvicorn main:app --reload  
+```
