@@ -15,7 +15,16 @@ git clone https://github.com/Xolog/Ylab_homework.git
 cd Ylab_homework  
 poetry install  
 ```
-Далее добавьте в директорию проекта свой **.env** файл с данными для подключения к БД 
+Если виртуальное окружение не активировалось в **shell**, то активируйте его с помощью команды
+```
+poetry shell
+```
+
+Далее добавьте в директорию проекта свой **.env** файл с данными для подключения к БД и примените миграции
+```
+alembic upgrade head 
+```
+Запустите проект
 ```
 cd api
 uvicorn main:app --reload  
