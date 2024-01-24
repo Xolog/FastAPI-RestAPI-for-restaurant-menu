@@ -29,3 +29,4 @@ alembic upgrade head
 cd api
 uvicorn main:app --reload  
 ```
+Перейдите в браузере по ссылке из терминала (по умолчанию http://127.0.0.1:8000)
