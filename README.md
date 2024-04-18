@@ -11,8 +11,8 @@
 
 ## Установка
 ```
-git clone https://github.com/Xolog/Ylab_homework.git
-cd Ylab_homework  
+git clone https://github.com/Xolog/FastAPI-RestAPI-for-restaurant-menu.git
+cd FastAPI-RestAPI-for-restaurant-menu  
 poetry install  
 ```
 Если виртуальное окружение не активировалось в **shell**, то активируйте его с помощью команды
